@@ -26,3 +26,10 @@ The worker checks for an active interactive turn, but there is no atomic idle-an
 File review is read-only. This release does not include a full browser IDE, browser terminal, push notifications, or multi-user collaboration. Work is serialized through one worker. A queued follow-up to a busy CLI thread can hold up later queued work.
 
 A separate app-server is not an attachment mechanism. Live conversation sharing requires both clients to use the exact same server endpoint.
+
+## Fast workspace verification
+
+- Live browser: search by prompt, arrow-key selection and Enter, Cmd K search, Cmd Shift K new session, and per-session draft recovery after reload.
+- Conversation scrollback and Latest output checked with a stationary composer.
+- Desktop and 390px phone viewport checked; reduced-motion emulation disabled transition and animation styles. Physical phone performance remains unverified.
+- A real no-tools task returned `Fast workspace ready.` through the updated composer, then was archived from the filtered mobile sidebar.

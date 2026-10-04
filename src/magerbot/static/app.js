@@ -12,6 +12,8 @@ const state = {
   archived: false,
   archiving: false,
   context: null,
+  query: "",
+  searchIndex: -1,
 };
 const labels = {
   queued: "Queued",
@@ -102,6 +104,7 @@ function renderList() {
   const signature = JSON.stringify([
     state.selected,
     state.archived,
+    state.query,
     [...groups.values()].map((g) => [
       g.first.id,
       g.first.thread_id,
@@ -115,11 +118,28 @@ function renderList() {
   if (signature === state.listSignature) return;
   state.listSignature = signature;
   const list = $("task-list");
+  const focusedId = list.contains(document.activeElement)
+    ? document.activeElement.dataset.taskId
+    : null;
+  const focusedMore = document.activeElement.classList.contains("session-more");
   list.replaceChildren();
-  const visible = [...groups.values()].filter(
+  const available = [...groups.values()].filter(
     (g) => !!g.latest.archived === state.archived,
   );
-  $("task-count").textContent = visible.length || "";
+  const terms = state.query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  const visible = available.filter((g) => {
+    const haystack = [
+      g.first.cwd,
+      g.first.thread_id || g.first.id,
+      ...g.tasks.map((t) => t.prompt + " " + t.state + " " + labels[t.state]),
+    ]
+      .join(" ")
+      .toLowerCase();
+    return terms.every((term) => haystack.includes(term));
+  });
+  $("task-count").textContent = terms.length
+    ? `${visible.length}/${available.length}`
+    : available.length || "";
   $("active-sessions").setAttribute("aria-pressed", String(!state.archived));
   $("archived-sessions").setAttribute("aria-pressed", String(state.archived));
   if (!visible.length) {
@@ -127,9 +147,11 @@ function renderList() {
       el(
         "p",
         "subtle",
-        state.archived
-          ? "No archived conversations. Archive a session to clear it from Active."
-          : "No active conversations. Start a task or reopen one from Archived.",
+        terms.length
+          ? "No sessions match. Try a project, a few words, or a status."
+          : state.archived
+            ? "No archived conversations. Archive a session to clear it from Active."
+            : "No active conversations. Start a task or reopen one from Archived.",
       ),
     );
     return;
@@ -152,6 +174,7 @@ function renderList() {
       latest.updated_at,
     );
     const project = first.cwd.split("/").filter(Boolean).at(-1);
+    button.dataset.taskId = latest.id;
     button.title = `${first.prompt.split("\n")[0]}\n${first.cwd}\nUpdated ${new Date(updated).toLocaleString()}\nSession ${first.thread_id || first.id}`;
     button.classList.toggle(
       "selected",
@@ -164,7 +187,9 @@ function renderList() {
       button.classList.contains("selected") ? "page" : "false",
     );
     row.classList.toggle("selected", button.classList.contains("selected"));
-    button.append(el("span", "task-title", first.prompt.split("\n")[0]));
+    const title = el("span", "task-title");
+    highlightMatch(title, first.prompt.split("\n")[0], terms);
+    button.append(title);
     const projectMeta = el("span", "task-project");
     projectMeta.append(
       el("span", "project-name", project),
@@ -188,6 +213,7 @@ function renderList() {
     button.append(meta);
     button.onclick = () => select(latest.id);
     const more = el("button", "session-more", "⋯");
+    more.dataset.taskId = latest.id;
     more.setAttribute(
       "aria-label",
       "Session actions: " + first.prompt.split("\n")[0],
@@ -211,7 +237,102 @@ function renderList() {
     row.append(button, more);
     list.append(row);
   }
+  if (focusedId) {
+    [...list.querySelectorAll(focusedMore ? ".session-more" : ".task-row")]
+      .find((b) => b.dataset.taskId === focusedId)
+      ?.focus({ preventScroll: true });
+  }
+  paintSearchSelection();
 }
+function highlightMatch(node, text, terms) {
+  if (!terms.length) {
+    node.textContent = text;
+    return;
+  }
+  const lower = text.toLowerCase();
+  let offset = 0;
+  while (offset < text.length) {
+    const matches = terms
+      .map((term) => ({ term, index: lower.indexOf(term, offset) }))
+      .filter((m) => m.index >= 0)
+      .sort((a, b) => a.index - b.index);
+    if (!matches.length) {
+      node.append(document.createTextNode(text.slice(offset)));
+      break;
+    }
+    const { term, index } = matches[0];
+    node.append(
+      document.createTextNode(text.slice(offset, index)),
+      el("mark", "", text.slice(index, index + term.length)),
+    );
+    offset = index + term.length;
+  }
+}
+function paintSearchSelection() {
+  const rows = [...$("task-list").querySelectorAll(".task-row")];
+  state.searchIndex = Math.min(state.searchIndex, rows.length - 1);
+  $("search-announcement").textContent =
+    document.activeElement === $("session-search") && state.searchIndex >= 0
+      ? rows[state.searchIndex]?.textContent + ". Press Enter to open."
+      : "";
+  rows.forEach((row, index) =>
+    row.parentElement.classList.toggle(
+      "search-target",
+      document.activeElement === $("session-search") &&
+        index === state.searchIndex,
+    ),
+  );
+}
+function focusSearch() {
+  closeSessionMenu();
+  setMobile(true);
+  $("session-search").focus();
+  $("session-search").select();
+  state.searchIndex = -1;
+  paintSearchSelection();
+}
+$("session-search").addEventListener("input", () => {
+  closeSessionMenu();
+  state.query = $("session-search").value;
+  state.searchIndex = -1;
+  renderList();
+});
+$("session-search").addEventListener("blur", paintSearchSelection);
+$("session-search").addEventListener("keydown", (event) => {
+  const rows = [...$("task-list").querySelectorAll(".task-row")];
+  if (["ArrowDown", "ArrowUp"].includes(event.key) && rows.length) {
+    event.preventDefault();
+    state.searchIndex =
+      state.searchIndex < 0
+        ? event.key === "ArrowDown"
+          ? 0
+          : rows.length - 1
+        : (state.searchIndex +
+            (event.key === "ArrowDown" ? 1 : -1) +
+            rows.length) %
+          rows.length;
+    paintSearchSelection();
+    rows[state.searchIndex].scrollIntoView({ block: "nearest" });
+  }
+  if (event.key === "Enter" && rows.length) {
+    event.preventDefault();
+    rows[Math.max(0, state.searchIndex)].click();
+    if (!state.pending) $("prompt").focus();
+  }
+  if (event.key === "Escape") {
+    event.preventDefault();
+    event.stopPropagation();
+    if (state.query) {
+      $("session-search").value = "";
+      state.query = "";
+      state.searchIndex = -1;
+      renderList();
+    } else {
+      setMobile(false);
+      $("prompt").focus();
+    }
+  }
+});
 function closeSessionMenu(restoreFocus = false) {
   if (!state.context) return;
   const trigger = state.context.trigger;
@@ -318,11 +439,16 @@ function select(id) {
   $("archive-session").hidden = !id;
   $("project-settings").hidden = !!id;
   $("task-notice").hidden = true;
+  $("session-strip").hidden = !id;
+  $("jump-latest").hidden = true;
+  resizePrompt();
   if (!id) {
     $("conversation").replaceChildren();
     $("view-title").textContent = "New task";
     toggleFiles(false);
   } else {
+    $("view-title").textContent =
+      family()[0]?.prompt.split("\n")[0] || "Conversation";
     $("conversation").replaceChildren(
       el("p", "subtle", "Loading the conversation…"),
     );
@@ -344,7 +470,10 @@ function updateComposer() {
   $("send").disabled =
     state.busy ||
     (!state.pending &&
-      (archived || !!(task && !task.thread_id) || task?.state === "uncertain"));
+      (archived ||
+        !!(task && !task.thread_id) ||
+        task?.state === "uncertain" ||
+        !$("prompt").value.trim()));
   $("send").replaceChildren(
     document.createTextNode(
       state.busy
@@ -362,6 +491,28 @@ function updateComposer() {
     el("span", "", "↑"),
   );
   $("prompt").disabled = archived || !!state.pending;
+  $("prompt-heading").textContent = state.selected
+    ? "Continue session"
+    : "New instruction";
+  $("draft-status").textContent = state.pending
+    ? "Awaiting confirmation"
+    : $("prompt").value.trim()
+      ? "Draft saved on this device"
+      : "";
+  if (task) {
+    $("session-state").replaceChildren(
+      el("span", "status-dot " + task.state),
+      document.createTextNode(
+        archived ? "Archived" : labels[task.state] || task.state,
+      ),
+    );
+    $("session-reference").textContent =
+      (task.thread_id || task.id).slice(0, 8) +
+      " · " +
+      family().length +
+      (family().length === 1 ? " task" : " tasks");
+    $("session-reference").title = task.thread_id || task.id;
+  }
   $("composer-context").textContent = waiting
     ? "Runs after the current task"
     : "Same conversation";
@@ -435,7 +586,8 @@ function renderConversation(data, fallback = false) {
   ]);
   if (signature === state.signature) return;
   state.signature = signature;
-  const column = document.querySelector(".conversation-column");
+  const column = $("conversation");
+  const previousScroll = column.scrollTop;
   const nearBottom =
     column.scrollHeight - column.scrollTop - column.clientHeight < 140;
   const opened = new Set(
@@ -504,7 +656,30 @@ function renderConversation(data, fallback = false) {
       : latest?.result?.error?.message || latest?.detail || "";
   $("task-notice").textContent = notice;
   $("task-notice").hidden = !notice;
-  if (nearBottom) column.scrollTop = column.scrollHeight;
+  column.scrollTop = nearBottom ? column.scrollHeight : previousScroll;
+  updateJumpButton();
+}
+function updateJumpButton() {
+  const list = $("conversation");
+  $("jump-latest").hidden =
+    !state.selected ||
+    list.scrollHeight - list.scrollTop - list.clientHeight < 100;
+}
+$("conversation").addEventListener("scroll", updateJumpButton, {
+  passive: true,
+});
+$("jump-latest").onclick = () => {
+  $("conversation").scrollTo({
+    top: $("conversation").scrollHeight,
+    behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? "instant"
+      : "smooth",
+  });
+};
+function resizePrompt() {
+  const input = $("prompt");
+  input.style.height = "auto";
+  input.style.height = Math.min(180, Math.max(48, input.scrollHeight)) + "px";
 }
 async function refreshConversation() {
   if (!state.selected) return;
@@ -618,12 +793,14 @@ $("composer").addEventListener("submit", async (event) => {
     updateComposer();
   }
 });
-$("prompt").addEventListener("input", () =>
+$("prompt").addEventListener("input", () => {
   localStorage.setItem(
     "homeport.draft." + (state.selected || "new"),
     $("prompt").value,
-  ),
-);
+  );
+  resizePrompt();
+  updateComposer();
+});
 $("prompt").addEventListener("keydown", (e) => {
   if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
     e.preventDefault();
@@ -687,10 +864,12 @@ $("new-task").onclick = () => {
 };
 $("menu").onclick = () => setMobile(!$("sidebar").classList.contains("open"));
 document.addEventListener("keydown", (e) => {
-  if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
     e.preventDefault();
-    select(null);
-    $("prompt").focus();
+    if (e.shiftKey) {
+      select(null);
+      $("prompt").focus();
+    } else focusSearch();
   }
   if (e.key === "Escape") {
     setMobile(false);
@@ -700,6 +879,7 @@ document.addEventListener("keydown", (e) => {
 for (const b of document.querySelectorAll("[data-prompt]"))
   b.onclick = () => {
     $("prompt").value = b.dataset.prompt;
+    $("prompt").dispatchEvent(new Event("input"));
     $("prompt").focus();
   };
 async function toggleFiles(open) {

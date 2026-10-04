@@ -137,3 +137,10 @@ This personal installation excludes Perch and magerblog as task working director
 ### Archive conversations
 
 Right-click a sidebar session (or tap its **⋯** button) for **Archive** and **Restore**. You can also use **Archive** in the conversation toolbar to move a session out of Active. Open **Archived**, select a session, and choose **Restore** to continue it. History stays on the Mini. Archiving does not cancel a queued or running task, and it does not close attached Codex terminals. Archive state is shared across devices and persists through restarts.
+
+### Fast navigation
+
+- **⌘/Ctrl K:** search the current Active or Archived list by prompt, project, status, or session ID. Use ↑/↓ then Enter to open a match; Escape clears the query.
+- **⌘/Ctrl Shift K:** new conversation. **⌘/Ctrl Enter:** submit.
+- The composer grows as you type and keeps drafts on this device. The conversation scrolls independently; **Latest output** returns you to the newest response.
+- UI transitions respect your system's reduced-motion preference.

@@ -37,3 +37,7 @@ Keyboard-friendly forms, visible focus, labeled status, readable contrast, and r
 The owner explicitly requested a black, terminal-like interface after trying the initial light sage palette. Use true black, neutral charcoal panels, monospace typography, fine borders, compact controls, and restrained cyan for action and focus. No green garden-like palette. Archive sessions without deleting history; restoration should be easy.
 
 Use regular-weight monospace text, including session titles. Sidebar rows show labeled semantic status colors, project, task count, and last activity. Session actions are available through right-click, keyboard, and a visible overflow button for touch.
+
+## Fast Workspace
+
+Confirmed overdrive direction: instant local session search, keyboard navigation, stable conversation scrollback, and a compact composer. Cmd/Ctrl K searches; Cmd/Ctrl Shift K starts a session. Use brief state transitions only, disabled with reduced motion. Keep draft recovery and uncertain-submission handling intact.
