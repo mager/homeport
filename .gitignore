@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.protocol/
+*.egg-info/
+.DS_Store
+.smoke/
+.env
+.env.*
+*.sqlite3*
+*.local.md
+*.log

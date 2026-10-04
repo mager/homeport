@@ -1,0 +1,32 @@
+[project]
+name = "homeport-codex"
+version = "0.2.0"
+description = "A private workspace for coding agents that stay on your own computer"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115,<1",
+    "pydantic>=2.12,<3",
+    "uvicorn>=0.30,<1",
+    "websockets>=15,<17",
+]
+
+[project.scripts]
+homeport = "magerbot.cli:main"
+magerbot = "magerbot.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "httpx>=0.27,<1",
+    "pytest>=8,<10",
+    "pytest-asyncio>=1,<2",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/magerbot"]
