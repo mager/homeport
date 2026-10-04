@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
-    <meta name="theme-color" content="#f4f6f3" />
+    <meta name="theme-color" content="#000000" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <title>Homeport</title>
     <link rel="icon" href="/static/icon.svg" type="image/svg+xml" />
@@ -27,7 +27,15 @@
         <button class="new-task" id="new-task">
           <span aria-hidden="true">＋</span> New task <kbd>⌘ K</kbd>
         </button>
-        <div class="list-label">YOUR WORK <span id="task-count"></span></div>
+        <div
+          class="session-filters"
+          role="group"
+          aria-label="Conversation view"
+        >
+          <button id="active-sessions" aria-pressed="true">Active</button>
+          <button id="archived-sessions" aria-pressed="false">Archived</button>
+          <span id="task-count"></span>
+        </div>
         <nav id="task-list" aria-label="Tasks">
           <p class="subtle loading">Loading your work…</p>
         </nav>
@@ -53,6 +61,14 @@
             <span id="project">Workspace</span><span class="separator">/</span
             ><strong id="view-title">New task</strong>
           </div>
+          <button
+            id="archive-session"
+            class="quiet"
+            hidden
+            title="Hide this conversation. Running work continues."
+          >
+            Archive
+          </button>
           <button id="files-toggle" class="quiet" hidden>
             Files <span aria-hidden="true">⌘</span>
           </button>
@@ -61,11 +77,11 @@
         <section class="workspace">
           <div class="conversation-column">
             <div id="welcome" class="welcome">
-              <div class="eyebrow">AT HOME, STILL WORKING</div>
-              <h1>A place to leave<br />your work running.</h1>
+              <div class="eyebrow">~/homeport</div>
+              <h1>Ready when you are.</h1>
               <p>
-                Start something here. Pick it up from your laptop or phone.
-                Codex and your files stay on the Mini.
+                Run a task on your Mini. Close the laptop. Come back to the same
+                session.
               </p>
               <div class="suggestions">
                 <button

@@ -9,6 +9,8 @@ const state = {
   pending: null,
   files: false,
   polling: false,
+  archived: false,
+  archiving: false,
 };
 const labels = {
   queued: "Queued",
@@ -95,11 +97,13 @@ function renderList() {
   }
   const signature = JSON.stringify([
     state.selected,
+    state.archived,
     [...groups.values()].map((g) => [
       g.first.id,
       g.first.thread_id,
       g.latest.id,
       g.latest.state,
+      g.latest.archived,
       age(g.latest.updated_at),
     ]),
   ]);
@@ -107,19 +111,26 @@ function renderList() {
   state.listSignature = signature;
   const list = $("task-list");
   list.replaceChildren();
-  $("task-count").textContent = groups.size || "";
-  if (!groups.size) {
+  const visible = [...groups.values()].filter(
+    (g) => !!g.latest.archived === state.archived,
+  );
+  $("task-count").textContent = visible.length || "";
+  $("active-sessions").setAttribute("aria-pressed", String(!state.archived));
+  $("archived-sessions").setAttribute("aria-pressed", String(state.archived));
+  if (!visible.length) {
     list.append(
       el(
         "p",
         "subtle",
-        "Your conversations will appear here. Start with a task below.",
+        state.archived
+          ? "No archived conversations. Archive a session to clear it from Active."
+          : "No active conversations. Start a task or reopen one from Archived.",
       ),
     );
     return;
   }
   const selected = chosen();
-  for (const { first, latest } of [...groups.values()].sort((a, b) =>
+  for (const { first, latest } of visible.sort((a, b) =>
     b.latest.created_at.localeCompare(a.latest.created_at),
   )) {
     const button = el("button", "task-row");
@@ -162,6 +173,8 @@ function select(id) {
   }
   if (state.selected !== id) toggleFiles(false);
   state.selected = id;
+  if (!id) state.archived = false;
+  else if (chosen()) state.archived = !!chosen().archived;
   state.signature = "";
   location.hash = id ? "task=" + id : "";
   setMobile(false);
@@ -171,6 +184,7 @@ function select(id) {
   $("welcome").hidden = !!id;
   $("conversation").hidden = !id;
   $("files-toggle").hidden = !id;
+  $("archive-session").hidden = !id;
   $("project-settings").hidden = !!id;
   $("task-notice").hidden = true;
   if (!id) {
@@ -189,23 +203,34 @@ function select(id) {
 function updateComposer() {
   const task = newest();
   const waiting = task && active.has(task.state);
+  const archived = !!task?.archived;
+  $("archive-session").textContent = archived ? "Restore" : "Archive";
+  $("archive-session").title = archived
+    ? "Return this conversation to Active"
+    : "Hide this conversation. Running work continues.";
+  $("archive-session").disabled =
+    state.archiving || state.busy || !!state.pending;
   $("send").disabled =
-    state.busy || !!(task && !task.thread_id) || task?.state === "uncertain";
+    state.busy ||
+    (!state.pending &&
+      (archived || !!(task && !task.thread_id) || task?.state === "uncertain"));
   $("send").replaceChildren(
     document.createTextNode(
       state.busy
         ? "Sending…"
         : state.pending
           ? "Check submission"
-          : state.selected
-            ? waiting
-              ? "Queue follow-up"
-              : "Send follow-up"
-            : "Start task",
+          : archived
+            ? "Archived"
+            : state.selected
+              ? waiting
+                ? "Queue follow-up"
+                : "Send follow-up"
+              : "Start task",
     ),
     el("span", "", "↑"),
   );
-  $("prompt").disabled = !!state.pending;
+  $("prompt").disabled = archived || !!state.pending;
   $("composer-context").textContent = waiting
     ? "Runs after the current task"
     : "Same conversation";
@@ -275,7 +300,7 @@ function renderConversation(data, fallback = false) {
   const tasks = family();
   const signature = JSON.stringify([
     data,
-    tasks.map((t) => [t.id, t.state, t.result, t.detail]),
+    tasks.map((t) => [t.id, t.state, t.result, t.detail, t.archived]),
   ]);
   if (signature === state.signature) return;
   state.signature = signature;
@@ -341,8 +366,9 @@ function renderConversation(data, fallback = false) {
   $("view-title").textContent =
     data?.name || tasks[0]?.prompt.split("\n")[0] || "Conversation";
   const latest = tasks.at(-1);
-  const notice =
-    latest?.state === "uncertain"
+  const notice = latest?.archived
+    ? "Archived. History is saved and any running work continues. Restore to send another message."
+    : latest?.state === "uncertain"
       ? "The connection was lost during submission. Homeport has not repeated the task. Inspect its outcome before continuing."
       : latest?.result?.error?.message || latest?.detail || "";
   $("task-notice").textContent = notice;
@@ -473,6 +499,49 @@ $("prompt").addEventListener("keydown", (e) => {
     $("composer").requestSubmit();
   }
 });
+for (const [id, archived] of [
+  ["active-sessions", false],
+  ["archived-sessions", true],
+]) {
+  $(id).onclick = () => {
+    state.archived = archived;
+    renderList();
+  };
+}
+$("archive-session").onclick = async () => {
+  if (!state.selected || state.pending || state.archiving) return;
+  const id = state.selected;
+  const archived = !chosen()?.archived;
+  state.archiving = true;
+  error("");
+  updateComposer();
+  try {
+    await api("/tasks/" + id + "/archive", {
+      method: "PUT",
+      body: JSON.stringify({ archived }),
+    });
+    state.tasks = await api("/tasks");
+    if (state.selected === id) {
+      if (archived) {
+        select(null);
+        state.archived = false;
+      } else {
+        state.archived = false;
+        state.signature = "";
+        await refreshConversation();
+      }
+    }
+    renderList();
+  } catch (e) {
+    error(
+      "Could not confirm the archive change. Refresh or try again; history is saved. " +
+        e.message,
+    );
+  } finally {
+    state.archiving = false;
+    updateComposer();
+  }
+};
 $("new-task").onclick = () => {
   select(null);
   $("prompt").focus();

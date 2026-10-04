@@ -13,7 +13,7 @@ Checked October 4, 2026 against Codex CLI 0.160.0 on an Apple Silicon Mac mini r
 - A browser task and a browser follow-up both completed. Reloading preserved the conversation and results.
 - Project file preview worked through the private HTTPS URL.
 - The 390 × 844 phone layout had no horizontal overflow. This is browser viewport testing, not a completed test on a physical iPhone.
-- 17 automated tests cover task validation, durable state, idempotent concurrent submissions, restart reconciliation, timeout interruption, uncertain outcomes, API-account refusal, private web access, cross-origin writes, host validation, and file boundaries.
+- 19 automated tests cover task validation, durable state, idempotent concurrent submissions, restart reconciliation, timeout interruption, uncertain outcomes, API-account refusal, private web access, cross-origin writes, host validation, file boundaries, and archive/restore persistence while a worker updates a task.
 
 ## Limits
 

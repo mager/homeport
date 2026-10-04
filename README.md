@@ -133,3 +133,7 @@ The frontend is plain HTML/CSS/JavaScript served by FastAPI. There is no fronten
 This personal installation excludes Perch and magerblog as task working directories. Adjust those explicit exclusions if adapting Homeport for a different owner. They are instruction and input-validation boundaries, not an OS sandbox.
 
 [Protocol](https://learn.chatgpt.com/docs/app-server) · [Codex authentication](https://learn.chatgpt.com/docs/auth) · [Tailscale Serve](https://tailscale.com/docs/features/tailscale-serve) · [MIT license](LICENSE)
+
+### Archive conversations
+
+Use **Archive** in the conversation toolbar to move a session out of Active. Open **Archived**, select a session, and choose **Restore** to continue it. History stays on the Mini. Archiving does not cancel a queued or running task, and it does not close attached Codex terminals. Archive state is shared across devices and persists through restarts.

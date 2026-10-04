@@ -56,6 +56,10 @@ class Submission(Model):
         return text
 
 
+class ArchiveRequest(Model):
+    archived: bool
+
+
 def visible_path(path: Path) -> bool:
     return all(
         not part.startswith(".")
@@ -180,7 +184,21 @@ def create_app(
     @app.get("/api/tasks")
     async def tasks():
         with database() as store:
-            return [task.model_dump(mode="json") for task in reversed(store.tasks())]
+            keys = store.archived_keys()
+            return [
+                {
+                    **task.model_dump(mode="json"),
+                    "archived": store.is_archived(task, keys),
+                }
+                for task in reversed(store.tasks())
+            ]
+
+    @app.put("/api/tasks/{task_id}/archive")
+    async def archive(task_id: UUID, data: ArchiveRequest):
+        with database() as store:
+            task_from(store, task_id)
+            store.archive(task_id, data.archived)
+        return {"archived": data.archived}
 
     @app.post("/api/tasks", status_code=202)
     async def submit(data: Submission):
@@ -188,6 +206,14 @@ def create_app(
             parent = (
                 task_from(store, data.parent_task_id) if data.parent_task_id else None
             )
+            if parent and store.is_archived(parent):
+                # A retry of an already accepted request remains safe to resolve.
+                try:
+                    store.get(data.id)
+                except ValueError:
+                    raise HTTPException(
+                        409, "Restore this conversation before adding a task."
+                    )
             if parent and not parent.thread_id:
                 raise HTTPException(
                     409,

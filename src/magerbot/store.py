@@ -16,6 +16,7 @@ class Store:
             CREATE TABLE IF NOT EXISTS tasks (id TEXT PRIMARY KEY, body TEXT NOT NULL);
             CREATE TABLE IF NOT EXISTS events (seq INTEGER PRIMARY KEY AUTOINCREMENT,
                 thread_id TEXT, body TEXT NOT NULL);
+            CREATE TABLE IF NOT EXISTS archived_sessions (key TEXT PRIMARY KEY);
         """)
         (directory / "tasks.sqlite3").chmod(0o600)
 
@@ -61,6 +62,39 @@ class Store:
             Task.model_validate_json(r[0])
             for r in self.db.execute("SELECT body FROM tasks ORDER BY rowid")
         ]
+
+    def archived_keys(self) -> set[str]:
+        keys = {row[0] for row in self.db.execute("SELECT key FROM archived_sessions")}
+        # A queued task may acquire its thread ID after it was archived.
+        if keys:
+            for task in self.tasks():
+                if str(task.id) in keys and task.thread_id:
+                    keys.add(str(task.thread_id))
+        return keys
+
+    def is_archived(self, task: Task, keys: set[str] | None = None) -> bool:
+        keys = self.archived_keys() if keys is None else keys
+        return str(task.id) in keys or str(task.thread_id) in keys
+
+    def archive(self, task_id: UUID, archived: bool):
+        # Separate metadata avoids overwriting task progress from the worker.
+        # BEGIN IMMEDIATE also serializes this with a thread ID being assigned.
+        with self.db:
+            self.db.execute("BEGIN IMMEDIATE")
+            task = self.get(task_id)
+            keys = {str(task.id)}
+            if task.thread_id:
+                keys.add(str(task.thread_id))
+                keys.update(
+                    str(t.id) for t in self.tasks() if t.thread_id == task.thread_id
+                )
+            for key in keys:
+                if archived:
+                    self.db.execute(
+                        "INSERT OR IGNORE INTO archived_sessions VALUES (?)", (key,)
+                    )
+                else:
+                    self.db.execute("DELETE FROM archived_sessions WHERE key=?", (key,))
 
     def event(self, event: Event):
         thread_id = event.params.get("threadId") or event.params.get("thread", {}).get(

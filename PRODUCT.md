@@ -31,3 +31,7 @@ No decorative dashboards, marketing heroes, or fake metrics. No requirement to u
 ## Accessibility & Inclusion
 
 Keyboard-friendly forms, visible focus, labeled status, readable contrast, and responsive layouts for phone and laptop. Respect reduced motion and avoid motion that doesn't convey state. These standard defaults implement the user's delegated design direction.
+
+## Visual Direction
+
+The owner explicitly requested a black, terminal-like interface after trying the initial light sage palette. Use true black, neutral charcoal panels, monospace typography, fine borders, compact controls, and restrained cyan for action and focus. No green garden-like palette. Archive sessions without deleting history; restoration should be easy.

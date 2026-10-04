@@ -148,3 +148,58 @@ def test_concurrent_same_id_is_one_task(tmp_path):
     with ThreadPoolExecutor(max_workers=4) as pool:
         assert list(pool.map(write, range(8))) == [task.id] * 8
     assert len(Store(tmp_path).tasks()) == 1
+
+
+def test_archive_restores_whole_thread_and_preserves_history(tmp_path):
+    c, config = client(tmp_path)
+    store = Store(config.state_dir)
+    thread = uuid4()
+    first = store.add(
+        Task(prompt="first", cwd=tmp_path, thread_id=thread, state="completed")
+    )
+    follow = store.add(
+        Task(prompt="follow", cwd=tmp_path, thread_id=thread, state="completed")
+    )
+    endpoint = f"/api/tasks/{first.id}/archive"
+    assert c.put(endpoint, json={"archived": True}).status_code == 403
+    assert (
+        c.put(endpoint, json={"archived": True}, headers=headers()).status_code == 200
+    )
+    assert all(t["archived"] for t in c.get("/api/tasks").json())
+    # New DB/application connection observes metadata, with all results intact.
+    c2, _ = client(tmp_path)
+    assert len(c2.get(f"/api/tasks/{first.id}").json()["tasks"]) == 2
+    payload = {"id": str(uuid4()), "prompt": "more", "parent_task_id": str(follow.id)}
+    assert c2.post("/api/tasks", json=payload, headers=headers()).status_code == 409
+    assert (
+        c2.put(
+            f"/api/tasks/{follow.id}/archive",
+            json={"archived": False},
+            headers=headers(),
+        ).status_code
+        == 200
+    )
+    assert not any(t["archived"] for t in c2.get("/api/tasks").json())
+    assert c2.post("/api/tasks", json=payload, headers=headers()).status_code == 202
+    store.db.close()
+
+
+def test_archive_queued_task_survives_worker_assignment_and_retry(tmp_path):
+    c, config = client(tmp_path)
+    payload = {"id": str(uuid4()), "prompt": "run once"}
+    c.post("/api/tasks", json=payload, headers=headers())
+    store = Store(config.state_dir)
+    task = store.get(payload["id"])
+    endpoint = f"/api/tasks/{task.id}/archive"
+    c.put(endpoint, json={"archived": True}, headers=headers())
+    # Worker saves a record read before archiving. It must not unarchive it.
+    task.thread_id = uuid4()
+    task.state = "running"
+    store.save(task)
+    assert c.get("/api/tasks").json()[0]["archived"] is True
+    assert c.get("/api/tasks").json()[0]["state"] == "running"
+    assert c.post("/api/tasks", json=payload, headers=headers()).status_code == 202
+    assert len(store.tasks()) == 1
+    c.put(endpoint, json={"archived": False}, headers=headers())
+    assert not c.get("/api/tasks").json()[0]["archived"]
+    store.db.close()
