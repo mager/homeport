@@ -36,6 +36,7 @@
           <button id="archived-sessions" aria-pressed="false">Archived</button>
           <span id="task-count"></span>
         </div>
+        <p id="session-feedback" class="error" role="status" hidden></p>
         <nav id="task-list" aria-label="Tasks">
           <p class="subtle loading">Loading your work…</p>
         </nav>
@@ -172,6 +173,17 @@
           </aside>
         </section>
       </main>
+    </div>
+    <div
+      id="session-menu"
+      class="session-menu"
+      role="menu"
+      aria-label="Session actions"
+      hidden
+    >
+      <button id="context-open" role="menuitem">Open conversation</button>
+      <button id="context-archive" role="menuitem">Archive conversation</button>
+      <p id="context-note">History stays saved. Running work continues.</p>
     </div>
   </body>
 </html>

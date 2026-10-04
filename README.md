@@ -136,4 +136,4 @@ This personal installation excludes Perch and magerblog as task working director
 
 ### Archive conversations
 
-Use **Archive** in the conversation toolbar to move a session out of Active. Open **Archived**, select a session, and choose **Restore** to continue it. History stays on the Mini. Archiving does not cancel a queued or running task, and it does not close attached Codex terminals. Archive state is shared across devices and persists through restarts.
+Right-click a sidebar session (or tap its **⋯** button) for **Archive** and **Restore**. You can also use **Archive** in the conversation toolbar to move a session out of Active. Open **Archived**, select a session, and choose **Restore** to continue it. History stays on the Mini. Archiving does not cancel a queued or running task, and it does not close attached Codex terminals. Archive state is shared across devices and persists through restarts.

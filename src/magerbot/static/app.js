@@ -11,6 +11,7 @@ const state = {
   polling: false,
   archived: false,
   archiving: false,
+  context: null,
 };
 const labels = {
   queued: "Queued",
@@ -88,12 +89,15 @@ function age(date) {
           });
 }
 function renderList() {
+  if (state.context) return; // Keep the open menu and keyboard focus stable during polling.
   const groups = new Map();
   for (const t of [...state.tasks].reverse()) {
     const key = t.thread_id || t.id;
     const g = groups.get(key);
-    if (g) g.latest = t;
-    else groups.set(key, { first: t, latest: t });
+    if (g) {
+      g.latest = t;
+      g.tasks.push(t);
+    } else groups.set(key, { first: t, latest: t, tasks: [t] });
   }
   const signature = JSON.stringify([
     state.selected,
@@ -105,6 +109,7 @@ function renderList() {
       g.latest.state,
       g.latest.archived,
       age(g.latest.updated_at),
+      g.tasks.map((t) => t.state),
     ]),
   ]);
   if (signature === state.listSignature) return;
@@ -130,10 +135,24 @@ function renderList() {
     return;
   }
   const selected = chosen();
-  for (const { first, latest } of visible.sort((a, b) =>
+  for (const { first, latest, tasks } of visible.sort((a, b) =>
     b.latest.created_at.localeCompare(a.latest.created_at),
   )) {
+    const row = el("div", "session-row");
     const button = el("button", "task-row");
+    const status =
+      tasks.find((t) => t.state === "uncertain")?.state ||
+      tasks.find((t) =>
+        ["running", "dispatching", "preparing"].includes(t.state),
+      )?.state ||
+      tasks.find((t) => t.state === "queued")?.state ||
+      latest.state;
+    const updated = tasks.reduce(
+      (a, t) => (t.updated_at > a ? t.updated_at : a),
+      latest.updated_at,
+    );
+    const project = first.cwd.split("/").filter(Boolean).at(-1);
+    button.title = `${first.prompt.split("\n")[0]}\n${first.cwd}\nUpdated ${new Date(updated).toLocaleString()}\nSession ${first.thread_id || first.id}`;
     button.classList.toggle(
       "selected",
       !!selected &&
@@ -144,18 +163,129 @@ function renderList() {
       "aria-current",
       button.classList.contains("selected") ? "page" : "false",
     );
+    row.classList.toggle("selected", button.classList.contains("selected"));
     button.append(el("span", "task-title", first.prompt.split("\n")[0]));
+    const projectMeta = el("span", "task-project");
+    projectMeta.append(
+      el("span", "project-name", project),
+      el(
+        "span",
+        "task-runs",
+        `${tasks.length} task${tasks.length === 1 ? "" : "s"}`,
+      ),
+    );
+    button.append(projectMeta);
     const meta = el("span", "task-meta");
     meta.append(
-      el("span", "status-dot " + latest.state),
-      el("span", "", labels[latest.state] || latest.state),
-      el("span", "task-time", age(latest.updated_at)),
+      el("span", "status-dot " + status),
+      el("span", "status-label " + status, labels[status] || status),
+      el(
+        "span",
+        "task-time",
+        age(updated) === "now" ? "now" : age(updated) + " ago",
+      ),
     );
     button.append(meta);
     button.onclick = () => select(latest.id);
-    list.append(button);
+    const more = el("button", "session-more", "⋯");
+    more.setAttribute(
+      "aria-label",
+      "Session actions: " + first.prompt.split("\n")[0],
+    );
+    more.setAttribute("aria-haspopup", "menu");
+    more.setAttribute("aria-expanded", "false");
+    more.onclick = () => openSessionMenu(latest.id, more);
+    row.oncontextmenu = (event) => {
+      event.preventDefault();
+      openSessionMenu(latest.id, more, event.clientX, event.clientY);
+    };
+    row.onkeydown = (event) => {
+      if (
+        (event.shiftKey && event.key === "F10") ||
+        event.key === "ContextMenu"
+      ) {
+        event.preventDefault();
+        openSessionMenu(latest.id, more);
+      }
+    };
+    row.append(button, more);
+    list.append(row);
   }
 }
+function closeSessionMenu(restoreFocus = false) {
+  if (!state.context) return;
+  const trigger = state.context.trigger;
+  state.context = null;
+  $("session-menu").hidden = true;
+  trigger.setAttribute("aria-expanded", "false");
+  if (restoreFocus && trigger.isConnected) trigger.focus();
+}
+function openSessionMenu(id, trigger, x, y) {
+  closeSessionMenu();
+  const task = state.tasks.find((t) => t.id === id);
+  if (!task) return;
+  state.context = { id, archived: !task.archived, trigger };
+  const menu = $("session-menu");
+  $("context-archive").textContent = task.archived
+    ? "Restore conversation"
+    : "Archive conversation";
+  $("context-archive").disabled = state.archiving || !!state.pending;
+  $("context-note").textContent = state.pending
+    ? "Confirm your pending submission first."
+    : task.archived
+      ? "Return to your active sessions."
+      : "History stays saved. Running work continues.";
+  trigger.setAttribute("aria-expanded", "true");
+  menu.hidden = false;
+  const rect = trigger.getBoundingClientRect();
+  menu.style.left =
+    Math.max(8, Math.min(x ?? rect.left, innerWidth - menu.offsetWidth - 8)) +
+    "px";
+  menu.style.top =
+    Math.max(
+      8,
+      Math.min(y ?? rect.bottom + 4, innerHeight - menu.offsetHeight - 8),
+    ) + "px";
+  $("context-open").focus();
+}
+$("context-open").onclick = () => {
+  const id = state.context?.id;
+  closeSessionMenu();
+  if (id) select(id);
+};
+$("context-archive").onclick = () => {
+  const context = state.context;
+  closeSessionMenu(true);
+  if (context) archiveSession(context.id, context.archived);
+};
+$("session-menu").onkeydown = (event) => {
+  const items = [
+    ...$("session-menu").querySelectorAll('[role="menuitem"]'),
+  ].filter((b) => !b.disabled);
+  if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
+    event.preventDefault();
+    const index = items.indexOf(document.activeElement);
+    const next =
+      event.key === "Home"
+        ? 0
+        : event.key === "End"
+          ? items.length - 1
+          : (index + (event.key === "ArrowDown" ? 1 : -1) + items.length) %
+            items.length;
+    items[next].focus();
+  }
+  if (event.key === "Escape") {
+    event.preventDefault();
+    event.stopPropagation();
+    closeSessionMenu(true);
+  }
+  if (event.key === "Tab") closeSessionMenu(true);
+};
+document.addEventListener("pointerdown", (event) => {
+  if (!$("session-menu").contains(event.target)) closeSessionMenu();
+});
+window.addEventListener("resize", () => closeSessionMenu());
+$("task-list").addEventListener("scroll", () => closeSessionMenu());
 function setMobile(open) {
   $("sidebar").classList.toggle("open", open);
   $("menu").setAttribute("aria-expanded", String(open));
@@ -165,6 +295,7 @@ function setMobile(open) {
   );
 }
 function select(id) {
+  closeSessionMenu();
   if (state.pending) {
     error(
       "A submission is waiting for confirmation. Use “Check submission” before switching conversations.",
@@ -508,11 +639,16 @@ for (const [id, archived] of [
     renderList();
   };
 }
-$("archive-session").onclick = async () => {
-  if (!state.selected || state.pending || state.archiving) return;
-  const id = state.selected;
-  const archived = !chosen()?.archived;
+async function archiveSession(id, archived) {
+  if (!id || state.pending || state.archiving) return;
+  const target = state.tasks.find((t) => t.id === id);
+  const selected = chosen();
+  const affectsSelected =
+    selected &&
+    (selected.id === id ||
+      (target?.thread_id && selected.thread_id === target.thread_id));
   state.archiving = true;
+  $("session-feedback").hidden = true;
   error("");
   updateComposer();
   try {
@@ -521,7 +657,7 @@ $("archive-session").onclick = async () => {
       body: JSON.stringify({ archived }),
     });
     state.tasks = await api("/tasks");
-    if (state.selected === id) {
+    if (affectsSelected && chosen()?.id === selected.id) {
       if (archived) {
         select(null);
         state.archived = false;
@@ -533,15 +669,18 @@ $("archive-session").onclick = async () => {
     }
     renderList();
   } catch (e) {
-    error(
-      "Could not confirm the archive change. Refresh or try again; history is saved. " +
-        e.message,
-    );
+    const message =
+      "Could not confirm the archive change. History is saved. " + e.message;
+    error(message);
+    $("session-feedback").textContent = message;
+    $("session-feedback").hidden = false;
   } finally {
     state.archiving = false;
     updateComposer();
   }
-};
+}
+$("archive-session").onclick = () =>
+  archiveSession(state.selected, !chosen()?.archived);
 $("new-task").onclick = () => {
   select(null);
   $("prompt").focus();
