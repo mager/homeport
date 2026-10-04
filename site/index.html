@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <title>Homeport | Your work has a home.</title>
+    <meta
+      name="description"
+      content="A private, open-source workspace for Codex on your Mac mini. Start a task, close your laptop, and return to the same conversation."
+    />
+    <meta
+      property="og:title"
+      content="Homeport | Close the laptop. Keep the momentum."
+    />
+    <meta
+      property="og:description"
+      content="Your machine. Your Codex account. A coding workspace that stays put while you move."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://homeport-gamma.vercel.app/" />
+    <link rel="canonical" href="https://homeport-gamma.vercel.app/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      property="og:image"
+      content="https://homeport-gamma.vercel.app/assets/workspace.jpg"
+    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <div class="site-wrap">
+      <header class="nav">
+        <a class="wordmark" href="#" aria-label="Homeport home"
+          ><svg viewBox="0 0 32 32" aria-hidden="true">
+            <rect x="1" y="1" width="30" height="30" rx="4" />
+            <path d="m8 10 6 6-6 6m10 0h6" /></svg
+          >homeport</a
+        >
+        <nav aria-label="Main navigation">
+          <a href="#how-it-works">How it works</a
+          ><a href="https://www.mager.co/blog/2026-10-04-homeport/"
+            >The build log</a
+          ><a class="nav-source" href="https://github.com/mager/homeport"
+            >GitHub <span aria-hidden="true">↗</span></a
+          >
+        </nav>
+      </header>
+      <main id="main">
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-kicker mono">
+            <span class="signal"></span> A home for your coding work
+            <span class="edition">OPEN SOURCE / EARLY RELEASE</span>
+          </div>
+          <h1 id="hero-title">
+            Close the laptop.<br /><span>Keep the momentum.</span>
+          </h1>
+          <div class="hero-bottom">
+            <p>
+              Start a task. Go live your life.<br />Codex keeps working on your
+              Mac mini.<br />Your conversation is here when you get back.
+            </p>
+            <div class="hero-actions">
+              <a class="button primary" href="#get-started"
+                >Give your work a home <span aria-hidden="true">↗</span></a
+              ><a class="text-link" href="https://github.com/mager/homeport"
+                >Explore the source <span aria-hidden="true">↗</span></a
+              >
+            </div>
+          </div>
+          <div class="workspace-frame">
+            <div class="frame-bar mono">
+              <span><span class="signal"></span> homeport / workspace</span
+              ><span>YOUR MACHINE. YOUR SESSION.</span>
+            </div>
+            <img
+              src="/assets/workspace.jpg"
+              width="1280"
+              height="720"
+              alt="The real Homeport workspace: searchable coding sessions, a Codex conversation, and a Python file preview in a black terminal-style interface."
+              fetchpriority="high"
+            />
+            <div class="frame-caption mono">
+              <span>Actual workspace. Browser + Codex + your files.</span
+              ><a href="#how-it-works">Follow the connection ↓</a>
+            </div>
+          </div>
+        </section>
+        <section
+          class="continuity section"
+          id="how-it-works"
+          aria-labelledby="continuity-title"
+        >
+          <div class="section-intro">
+            <div class="eyebrow mono">01 / COME AND GO</div>
+            <h2 id="continuity-title">
+              Your laptop is a window.<br /><span>The Mini is home.</span>
+            </h2>
+            <p>
+              Your device can leave the conversation.<br />Your work doesn’t
+              have to.
+            </p>
+          </div>
+          <div class="connection-demo" data-step="start">
+            <div class="demo-top mono">
+              <span>Connection walkthrough</span
+              ><span class="demo-label">INTERACTIVE DEMO</span>
+            </div>
+            <div class="network" aria-hidden="true">
+              <div class="device device-client">
+                <svg viewBox="0 0 112 88">
+                  <rect
+                    class="screen"
+                    x="18"
+                    y="10"
+                    width="76"
+                    height="51"
+                    rx="4"
+                  />
+                  <path d="M10 67h92l-7 7H17z" />
+                  <path class="device-code" d="m29 27 7 6-7 6m17 0h16" /></svg
+                ><span class="mono" id="client-label">Laptop connected</span
+                ><span class="device-note mono" id="client-note"
+                  >task submitted</span
+                >
+              </div>
+              <div class="connection">
+                <span class="packet"></span
+                ><span class="connection-label mono" id="link-label"
+                  >TAILSCALE</span
+                >
+              </div>
+              <div class="device device-mini">
+                <svg viewBox="0 0 112 88">
+                  <rect x="15" y="23" width="82" height="46" rx="12" />
+                  <path d="M15 54h82" />
+                  <circle class="mini-light" cx="82" cy="61" r="2" />
+                  <path d="m43 32 6 5-6 5m13 0h10" /></svg
+                ><span class="mono">Mac mini</span
+                ><span class="device-note mono"
+                  ><span class="signal"></span>
+                  <span id="mini-label">Codex working</span></span
+                >
+              </div>
+            </div>
+            <div class="demo-log mono" aria-live="polite">
+              <span class="log-marker">›</span>
+              <div>
+                <span id="demo-title">Task accepted. Conversation saved.</span
+                ><span id="demo-detail"
+                  >The worker tracks the turn on the Mini.</span
+                >
+              </div>
+            </div>
+            <div
+              class="demo-controls"
+              role="group"
+              aria-label="Walk through a Homeport session"
+            >
+              <button data-step="start" aria-pressed="true">
+                <span>01</span> Start a task</button
+              ><button data-step="leave" aria-pressed="false">
+                <span>02</span> Disconnect</button
+              ><button data-step="return" aria-pressed="false">
+                <span>03</span> Come back
+              </button>
+            </div>
+          </div>
+        </section>
+        <section class="workbench section" aria-labelledby="workbench-title">
+          <div class="eyebrow mono">02 / BUILT FOR THE RETURN</div>
+          <div class="workbench-heading">
+            <h2 id="workbench-title">
+              Less ceremony.<br /><span>More continuity.</span>
+            </h2>
+            <p>
+              A small, focused workspace for the parts between “go do this” and
+              “here’s what changed.”
+            </p>
+          </div>
+          <div class="feature-row">
+            <span class="feature-index mono">[ A ]</span>
+            <div>
+              <h3>Find the thread. Keep the thought.</h3>
+              <p>
+                Search sessions by prompt, project, or status. Read the result,
+                send a follow-up, and archive the work you’re done with.
+              </p>
+            </div>
+            <div class="key-combo mono" aria-label="Command K to search">
+              <kbd>⌘</kbd><kbd>K</kbd><span>back in the flow</span>
+            </div>
+          </div>
+          <div class="feature-row">
+            <span class="feature-index mono">[ B ]</span>
+            <div>
+              <h3>The browser and terminal, together.</h3>
+              <p>
+                Review code in the browser. Open the same live conversation in
+                the Codex CLI. One server keeps the conversation connected.
+              </p>
+            </div>
+            <div class="feature-aside mono">
+              browser <span>⇄</span> codex tui<br /><small
+                >one conversation</small
+              >
+            </div>
+          </div>
+          <div class="feature-row">
+            <span class="feature-index mono">[ C ]</span>
+            <div>
+              <h3>Remembers what happened.</h3>
+              <p>
+                Task IDs, progress, and results are persisted locally. When a
+                submission’s outcome is unclear, Homeport flags it for
+                inspection instead of quietly running it again.
+              </p>
+            </div>
+            <div class="feature-aside mono">
+              <span class="signal amber"></span> uncertain<br /><small
+                >inspect before retrying</small
+              >
+            </div>
+          </div>
+        </section>
+        <section
+          class="architecture section"
+          aria-labelledby="architecture-title"
+        >
+          <div>
+            <div class="eyebrow mono">03 / A SMALL, DELIBERATE STACK</div>
+            <h2 id="architecture-title">
+              Your machine.<br />Your Codex account.<br /><span
+                >Your way back in.</span
+              >
+            </h2>
+          </div>
+          <div class="architecture-copy">
+            <p>
+              Codex does the coding. Python and Pydantic validate the requests
+              and keep track of the work. SQLite remembers it. Tailscale brings
+              you back.
+            </p>
+            <p>
+              The agent processes, files, and task state live on your computer.
+              Model inference runs through OpenAI, using your normal Codex login
+              and plan limits.
+            </p>
+            <div class="stack mono">
+              <span>Python</span><span>Pydantic v2</span><span>SQLite</span
+              ><span>Codex CLI</span><span>Tailscale</span>
+            </div>
+            <a
+              class="text-link"
+              href="https://www.mager.co/blog/2026-10-04-homeport/"
+              >Read the build log <span aria-hidden="true">↗</span></a
+            >
+          </div>
+        </section>
+        <section
+          class="get-started section"
+          id="get-started"
+          aria-labelledby="start-title"
+        >
+          <div class="start-heading">
+            <div class="eyebrow mono">04 / MAKE YOURSELF AT HOME</div>
+            <h2 id="start-title">
+              One little machine.<br /><span>A lot of possibility.</span>
+            </h2>
+            <p>
+              Bring a Mac mini, a Codex-supported ChatGPT account,<br
+                class="desktop-break"
+              />
+              and something you want to build.
+            </p>
+            <a
+              class="button primary"
+              href="https://github.com/mager/homeport#install-on-the-mini"
+              >Read the setup guide <span aria-hidden="true">↗</span></a
+            >
+          </div>
+          <div class="install">
+            <div class="install-top mono">
+              <span>ON YOUR MINI</span
+              ><button id="copy-install" aria-label="Copy clone commands">
+                Copy <span aria-hidden="true">⧉</span>
+              </button>
+            </div>
+            <pre
+              tabindex="0"
+            ><code id="install-command">git clone https://github.com/mager/homeport.git
+cd homeport</code></pre>
+            <p>
+              Then follow the guide to install prerequisites, sign in to Codex,
+              and start Homeport.
+            </p>
+            <div class="install-foot mono">
+              <span class="signal"></span> MIT licensed. Self-hosted. Early
+              release.
+            </div>
+            <p class="copy-feedback mono" id="copy-feedback" role="status"></p>
+          </div>
+        </section>
+        <section class="details-section" aria-labelledby="details-title">
+          <h2 id="details-title" class="mono">A few things to know.</h2>
+          <div class="faq-list">
+            <details>
+              <summary>Is this a hosted service?</summary>
+              <p>
+                No. Homeport is open-source software you run on your own Mac
+                mini. This website is the public introduction; your workspace
+                stays on your machine, reachable privately through Tailscale.
+              </p>
+            </details>
+            <details>
+              <summary>Does it use my ChatGPT account?</summary>
+              <p>
+                Homeport reuses normal Codex authentication. The original
+                installation was verified with a ChatGPT Pro account, without a
+                separate API key. Your account’s Codex access and usage limits
+                still apply.
+              </p>
+            </details>
+            <details>
+              <summary>What happens when I close my laptop?</summary>
+              <p>
+                Tasks keep running on the Mini while it is awake. tmux preserves
+                the processes through SSH disconnects, and launchd supervises
+                the service. After a reboot, it starts when the macOS user logs
+                in; unattended FileVault unlock is not part of the setup.
+              </p>
+            </details>
+            <details>
+              <summary>What access does Codex have?</summary>
+              <p>
+                This version intentionally gives Codex full filesystem and
+                network access as the signed-in macOS user, with no
+                command-approval prompts. It does not grant root or bypass macOS
+                privacy controls. Use a machine and account where you intend to
+                allow that access.
+              </p>
+            </details>
+            <details>
+              <summary>How early is “early”?</summary>
+              <p>
+                Homeport has been tested on an Apple Silicon Mac mini with Codex
+                CLI 0.160.0. It includes browser-based task submission, file
+                previews, saved conversations, and restart recovery. The
+                app-server interface is experimental. It is a personal
+                workspace, with one worker, rather than a full browser IDE or a
+                multi-user service.
+              </p>
+            </details>
+          </div>
+        </section>
+      </main>
+      <footer>
+        <a class="footer-name" href="#"
+          >homeport<span aria-hidden="true">_</span></a
+        >
+        <div class="footer-meta mono">
+          <span
+            >Built by <a href="https://www.mager.co/">mager</a>, in
+            Chicago.</span
+          ><span>Your work has a home.</span
+          ><a href="https://github.com/mager/homeport">Open source ↗</a>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
