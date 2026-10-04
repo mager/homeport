@@ -4,7 +4,7 @@
 
 Start a task from your laptop. Check its progress from your phone. Come back to the same conversation, with your files and Codex still on your own computer.
 
-Homeport is a small Python/Pydantic workspace around Codex CLI's app-server. It has a private browser interface, durable task records, and an optional interactive Codex terminal. Pydantic validates the data; Codex does the coding. There is no second model loop or Pydantic AI dependency.
+Homeport is a small Python/Pydantic workspace around Codex CLI's app-server. It has a private browser interface, durable task records, and an optional interactive Codex terminal. Pydantic validates the data; Codex does the coding. There is no second model loop or Pydantic AI dependency. Model inference still goes through OpenAI; the agent processes, repositories, and task state live on your computer.
 
 ![Homeport workspace with conversation and code preview](docs/screenshots/workspace.jpg)
 
