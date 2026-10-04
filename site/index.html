@@ -23,7 +23,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       property="og:image"
-      content="https://homeport-gamma.vercel.app/assets/workspace.jpg"
+      content="https://homeport-gamma.vercel.app/assets/neon-space-hero.jpg"
     />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/style.css" />
@@ -50,24 +50,29 @@
       </header>
       <main id="main">
         <section class="hero" aria-labelledby="hero-title">
-          <div class="hero-kicker mono">
-            <span class="signal"></span> A home for your coding work
-            <span class="edition">OPEN SOURCE / EARLY RELEASE</span>
-          </div>
-          <h1 id="hero-title">
-            Close the laptop.<br /><span>Keep the momentum.</span>
-          </h1>
-          <div class="hero-bottom">
-            <p>
-              Start a task. Go live your life.<br />Codex keeps working on your
-              Mac mini.<br />Your conversation is here when you get back.
-            </p>
-            <div class="hero-actions">
-              <a class="button primary" href="#get-started"
-                >Give your work a home <span aria-hidden="true">↗</span></a
-              ><a class="text-link" href="https://github.com/mager/homeport"
-                >Explore the source <span aria-hidden="true">↗</span></a
-              >
+          <div class="hero-stage">
+            <div class="hero-art" aria-hidden="true">
+              <img src="/assets/neon-space-hero.jpg" alt="" width="1942" height="809" fetchpriority="high" />
+            </div>
+            <div class="hero-kicker mono">
+              <span class="signal"></span> A home for your coding work
+              <span class="edition">OPEN SOURCE / EARLY RELEASE</span>
+            </div>
+            <h1 id="hero-title">
+              Close the laptop.<br /><span>Keep the momentum.</span>
+            </h1>
+            <div class="hero-bottom">
+              <p>
+                Start a task. Go live your life.<br />Codex keeps working on your
+                Mac mini.<br />Your conversation is here when you get back.
+              </p>
+              <div class="hero-actions">
+                <a class="button primary" href="#get-started"
+                  >Give your work a home <span aria-hidden="true">↗</span></a
+                ><a class="text-link" href="https://github.com/mager/homeport"
+                  >Explore the source <span aria-hidden="true">↗</span></a
+                >
+              </div>
             </div>
           </div>
           <div class="workspace-frame">
@@ -80,7 +85,7 @@
               width="1280"
               height="720"
               alt="The real Homeport workspace: searchable coding sessions, a Codex conversation, and a Python file preview in a black terminal-style interface."
-              fetchpriority="high"
+              loading="lazy"
             />
             <div class="frame-caption mono">
               <span>Actual workspace. Browser + Codex + your files.</span
