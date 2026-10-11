@@ -132,6 +132,8 @@ uv run homeport web
 
 The frontend is plain HTML/CSS/JavaScript served by FastAPI. There is no frontend build step. Personality and project boundaries live in [AGENTS.md](AGENTS.md).
 
+Run `npm ci && npm test` for the DOM-based Markdown safety and rendering tests. Node dependencies are development-only; the Mini serves the frontend without Node.
+
 This personal installation excludes Perch and magerblog as task working directories. Adjust those explicit exclusions if adapting Homeport for a different owner. They are instruction and input-validation boundaries, not an OS sandbox.
 
 [Protocol](https://learn.chatgpt.com/docs/app-server) · [Codex authentication](https://learn.chatgpt.com/docs/auth) · [Tailscale Serve](https://tailscale.com/docs/features/tailscale-serve) · [MIT license](LICENSE)
@@ -145,4 +147,6 @@ Right-click a sidebar session (or tap its **⋯** button) for **Archive** and **
 - **⌘/Ctrl K:** search the current Active or Archived list by prompt, project, status, or session ID. Use ↑/↓ then Enter to open a match; Escape clears the query.
 - **⌘/Ctrl Shift K:** new conversation. **⌘/Ctrl Enter:** submit.
 - The composer grows as you type and keeps drafts on this device. The conversation scrolls independently; **Latest output** returns you to the newest response.
-- UI transitions respect your system's reduced-motion preference.
+- Command rows show actual execution status and exit codes. Expand one to inspect its exact output; long lines scroll horizontally.
+- Replies render headings, emphasis, lists, links, and fenced code with a **Copy** action. This is a small Markdown subset: raw HTML and unsupported syntax remain text, and only HTTP(S) and email links become clickable.
+- **Latest output** respects your system's reduced-motion preference.

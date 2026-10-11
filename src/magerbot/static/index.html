@@ -11,6 +11,7 @@
     <title>Homeport</title>
     <link rel="icon" href="/static/icon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/static/style.css" />
+    <script src="/static/markdown.js" defer></script>
     <script src="/static/app.js" defer></script>
   </head>
   <body>
@@ -22,7 +23,7 @@
             width="28"
             height="28"
             alt=""
-          />Homeport<span class="version">alpha</span></a
+          />homeport<span class="version">alpha</span></a
         >
         <button class="new-task" id="new-task">
           <span aria-hidden="true">＋</span> New task <kbd>⌘ ⇧ K</kbd>
@@ -86,7 +87,7 @@
             Archive
           </button>
           <button id="files-toggle" class="quiet" hidden>
-            Files <span aria-hidden="true">⌘</span>
+            Files
           </button>
         </header>
         <div id="connection-banner" class="banner" role="status" hidden></div>
@@ -97,21 +98,20 @@
               ><span id="session-reference"></span>
             </div>
             <div id="welcome" class="welcome">
-              <div class="eyebrow">~/homeport</div>
-              <h1>Ready when you are.</h1>
+              <h1><span aria-hidden="true">&gt;_</span> Your next command.</h1>
               <p>
-                Run a task on your Mini. Close the laptop. Come back to the same
-                session.
+                Your workspace lives on the Mini. Start something here.
+                Pick it up from anywhere.
               </p>
               <div class="suggestions">
                 <button
                   data-prompt="Explore this project and explain how it works. Suggest one useful improvement before changing anything."
                 >
-                  Explore a project <span>↗</span></button
+                  <span aria-hidden="true">›</span> Explore a project</button
                 ><button
                   data-prompt="Review this project's code for bugs. Explain the most important findings with file references before making changes."
                 >
-                  Review the code <span>↗</span>
+                  <span aria-hidden="true">›</span> Review the code
                 </button>
               </div>
             </div>
@@ -165,7 +165,7 @@
               </form>
               <div class="composer-note">
                 <span id="persistence-note"
-                  >You can close this page. Work keeps going.</span
+                  >Work stays on the Mini. You can disconnect.</span
                 ><span class="desktop-only">⌘ Enter to send</span>
               </div>
               <div id="submit-error" class="error" role="alert" hidden></div>

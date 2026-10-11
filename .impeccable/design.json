@@ -1,0 +1,268 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-11T14:17:00.404509+00:00",
+  "title": "Design System: Homeport",
+  "extensions": {
+    "colorMeta": {
+      "bg": {
+        "role": "neutral",
+        "displayName": "Bg",
+        "tonalRamp": [
+          "oklch(15% 0.0000 0.00)",
+          "oklch(26% 0.0000 0.00)",
+          "oklch(38% 0.0000 0.00)",
+          "oklch(49% 0.0000 0.00)",
+          "oklch(61% 0.0000 0.00)",
+          "oklch(72% 0.0000 0.00)",
+          "oklch(84% 0.0000 0.00)",
+          "oklch(95% 0.0000 0.00)"
+        ]
+      },
+      "sidebar": {
+        "role": "neutral",
+        "displayName": "Sidebar",
+        "tonalRamp": [
+          "oklch(15% 0.0029 246.26)",
+          "oklch(26% 0.0029 246.26)",
+          "oklch(38% 0.0029 246.26)",
+          "oklch(49% 0.0029 246.26)",
+          "oklch(61% 0.0029 246.26)",
+          "oklch(72% 0.0029 246.26)",
+          "oklch(84% 0.0029 246.26)",
+          "oklch(95% 0.0029 246.26)"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Surface",
+        "tonalRamp": [
+          "oklch(15% 0.0052 248.12)",
+          "oklch(26% 0.0052 248.12)",
+          "oklch(38% 0.0052 248.12)",
+          "oklch(49% 0.0052 248.12)",
+          "oklch(61% 0.0052 248.12)",
+          "oklch(72% 0.0052 248.12)",
+          "oklch(84% 0.0052 248.12)",
+          "oklch(95% 0.0052 248.12)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "tonalRamp": [
+          "oklch(15% 0.0070 247.90)",
+          "oklch(26% 0.0070 247.90)",
+          "oklch(38% 0.0070 247.90)",
+          "oklch(49% 0.0070 247.90)",
+          "oklch(61% 0.0070 247.90)",
+          "oklch(72% 0.0070 247.90)",
+          "oklch(84% 0.0070 247.90)",
+          "oklch(95% 0.0070 247.90)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted",
+        "tonalRamp": [
+          "oklch(15% 0.0131 248.02)",
+          "oklch(26% 0.0131 248.02)",
+          "oklch(38% 0.0131 248.02)",
+          "oklch(49% 0.0131 248.02)",
+          "oklch(61% 0.0131 248.02)",
+          "oklch(72% 0.0131 248.02)",
+          "oklch(84% 0.0131 248.02)",
+          "oklch(95% 0.0131 248.02)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Line",
+        "tonalRamp": [
+          "oklch(15% 0.0094 248.16)",
+          "oklch(26% 0.0094 248.16)",
+          "oklch(38% 0.0094 248.16)",
+          "oklch(49% 0.0094 248.16)",
+          "oklch(61% 0.0094 248.16)",
+          "oklch(72% 0.0094 248.16)",
+          "oklch(84% 0.0094 248.16)",
+          "oklch(95% 0.0094 248.16)"
+        ]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Accent",
+        "tonalRamp": [
+          "oklch(15% 0.0998 213.48)",
+          "oklch(26% 0.0998 213.48)",
+          "oklch(38% 0.0998 213.48)",
+          "oklch(49% 0.0998 213.48)",
+          "oklch(61% 0.0998 213.48)",
+          "oklch(72% 0.0998 213.48)",
+          "oklch(84% 0.0998 213.48)",
+          "oklch(95% 0.0998 213.48)"
+        ]
+      },
+      "accent-soft": {
+        "role": "primary",
+        "displayName": "Accent Soft",
+        "tonalRamp": [
+          "oklch(15% 0.0208 217.76)",
+          "oklch(26% 0.0208 217.76)",
+          "oklch(38% 0.0208 217.76)",
+          "oklch(49% 0.0208 217.76)",
+          "oklch(61% 0.0208 217.76)",
+          "oklch(72% 0.0208 217.76)",
+          "oklch(84% 0.0208 217.76)",
+          "oklch(95% 0.0208 217.76)"
+        ]
+      },
+      "success": {
+        "role": "semantic",
+        "displayName": "Success",
+        "tonalRamp": [
+          "oklch(15% 0.1043 155.69)",
+          "oklch(26% 0.1043 155.69)",
+          "oklch(38% 0.1043 155.69)",
+          "oklch(49% 0.1043 155.69)",
+          "oklch(61% 0.1043 155.69)",
+          "oklch(72% 0.1043 155.69)",
+          "oklch(84% 0.1043 155.69)",
+          "oklch(95% 0.1043 155.69)"
+        ]
+      },
+      "warning": {
+        "role": "semantic",
+        "displayName": "Warning",
+        "tonalRamp": [
+          "oklch(15% 0.1000 80.04)",
+          "oklch(26% 0.1000 80.04)",
+          "oklch(38% 0.1000 80.04)",
+          "oklch(49% 0.1000 80.04)",
+          "oklch(61% 0.1000 80.04)",
+          "oklch(72% 0.1000 80.04)",
+          "oklch(84% 0.1000 80.04)",
+          "oklch(95% 0.1000 80.04)"
+        ]
+      },
+      "danger": {
+        "role": "semantic",
+        "displayName": "Danger",
+        "tonalRamp": [
+          "oklch(15% 0.1101 19.93)",
+          "oklch(26% 0.1101 19.93)",
+          "oklch(38% 0.1101 19.93)",
+          "oklch(49% 0.1101 19.93)",
+          "oklch(61% 0.1101 19.93)",
+          "oklch(72% 0.1101 19.93)",
+          "oklch(84% 0.1101 19.93)",
+          "oklch(95% 0.1101 19.93)"
+        ]
+      },
+      "interrupted": {
+        "role": "semantic",
+        "displayName": "Interrupted",
+        "tonalRamp": [
+          "oklch(15% 0.0980 300.36)",
+          "oklch(26% 0.0980 300.36)",
+          "oklch(38% 0.0980 300.36)",
+          "oklch(49% 0.0980 300.36)",
+          "oklch(61% 0.0980 300.36)",
+          "oklch(72% 0.0980 300.36)",
+          "oklch(84% 0.0980 300.36)",
+          "oklch(95% 0.0980 300.36)"
+        ]
+      }
+    },
+    "shadows": [],
+    "motion": [],
+    "breakpoints": [
+      {
+        "name": "file-overlay",
+        "value": "1100px"
+      },
+      {
+        "name": "phone",
+        "value": "700px"
+      },
+      {
+        "name": "short-viewport-height",
+        "value": "580px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Send action",
+      "kind": "button",
+      "description": "Cyan identifies the prompt submission action.",
+      "html": "<button class=\"ds-primary\">Send follow-up \u2191</button>",
+      "css": ".ds-primary{font-family:\"Geist Mono\",ui-monospace,\"SFMono-Regular\",Menlo,monospace;font-weight:400;font-size:11px;border:1px solid var(--accent,#73d9ef);background:var(--accent,#73d9ef);color:#061216;padding:6px 12px;min-height:32px;cursor:pointer}.ds-primary:hover:not(:disabled){background:#a4e9f7}.ds-primary:focus-visible{outline:1px solid var(--accent,#73d9ef);outline-offset:3px}.ds-primary:disabled{color:var(--muted,#90979e);background:#15191c;border-color:var(--line,#25292d);cursor:default}",
+      "refersTo": "button-primary"
+    },
+    {
+      "name": "Quiet action",
+      "kind": "button",
+      "description": "Low-emphasis toolbar action.",
+      "html": "<button class=\"ds-quiet\">Files</button>",
+      "css": ".ds-quiet{font-family:\"Geist Mono\",ui-monospace,\"SFMono-Regular\",Menlo,monospace;font-weight:400;font-size:11px;color:var(--muted,#90979e);border:1px solid transparent;background:transparent;padding:6px 9px;cursor:pointer}.ds-quiet:hover{color:var(--ink,#d8dce0);border-color:var(--line,#25292d);background:var(--surface,#101214)}.ds-quiet:focus-visible{outline:1px solid var(--accent,#73d9ef);outline-offset:3px}",
+      "refersTo": "button-quiet"
+    },
+    {
+      "name": "Session search",
+      "kind": "input",
+      "description": "Cyan container border communicates keyboard focus.",
+      "html": "<label class=\"ds-search\"><span>/</span><input aria-label=\"Find a session\" placeholder=\"Find a session\u2026\"></label>",
+      "css": ".ds-search{display:flex;gap:8px;align-items:center;padding:7px 10px;border:1px solid transparent;border-bottom-color:var(--line,#25292d);background:var(--sidebar,#08090a);color:var(--accent,#73d9ef)}.ds-search:focus-within{border-color:var(--accent,#73d9ef)}.ds-search input{font-family:\"Geist Mono\",ui-monospace,\"SFMono-Regular\",Menlo,monospace;font-weight:400;font-size:12px;width:100%;min-width:0;border:0;outline:none;background:transparent;color:var(--ink,#d8dce0);caret-color:var(--accent,#73d9ef)}.ds-search input::placeholder{color:var(--muted,#90979e);opacity:1}"
+    },
+    {
+      "name": "Selected session",
+      "kind": "nav",
+      "description": "A cyan left rule anchors the selected conversation.",
+      "html": "<button class=\"ds-session\" aria-current=\"page\"><span>Review the workspace</span><small>magerbot-pydantic \u00b7 1 task</small><small class=\"ds-done\">\u25aa Done</small></button>",
+      "css": ".ds-session{font-family:\"Geist Mono\",ui-monospace,\"SFMono-Regular\",Menlo,monospace;font-weight:400;display:block;text-align:left;width:100%;background:var(--accent-soft,#101e22);color:var(--ink,#d8dce0);border:0;border-left:1px solid var(--accent,#73d9ef);padding:12px 30px 12px 10px;font-size:12px;line-height:1.55;cursor:pointer}.ds-session small{display:block;color:var(--muted,#90979e);font-size:11px;margin-top:7px}.ds-session .ds-done{color:var(--success,#87d5a4);margin-top:4px}.ds-session:hover{background:var(--surface,#101214)}.ds-session:focus-visible{outline:1px solid var(--accent,#73d9ef);outline-offset:3px}",
+      "refersTo": "session-selected"
+    },
+    {
+      "name": "Command disclosure",
+      "kind": "custom",
+      "description": "The summary retains command and exit state; expansion reveals output.",
+      "html": "<details class=\"ds-tool\"><summary><span class=\"ds-command\">$ python --version</span><span class=\"ds-status\">exit 0</span></summary><pre tabindex=\"0\">Python 3.12.0</pre></details>",
+      "css": ".ds-tool{font-family:\"Geist Mono\",ui-monospace,\"SFMono-Regular\",Menlo,monospace;font-weight:400;font-size:12px;color:var(--muted,#90979e);border-top:1px solid #191d20}.ds-tool summary{display:flex;gap:10px;align-items:baseline;padding:8px 0;cursor:pointer;list-style:none}.ds-tool summary::-webkit-details-marker{display:none}.ds-tool summary:before{content:\"+\";width:10px}.ds-tool[open] summary:before{content:\"\u2212\";color:var(--accent,#73d9ef)}.ds-tool summary:hover{color:var(--ink,#d8dce0)}.ds-tool summary:focus-visible{outline:1px solid var(--accent,#73d9ef);outline-offset:3px}.ds-command{flex:1;min-width:0}.ds-status{font-size:11px;color:var(--success,#87d5a4)}.ds-tool pre{font-family:\"Geist Mono\",ui-monospace,\"SFMono-Regular\",Menlo,monospace;font-weight:400;font-size:11px;line-height:1.7;margin:0 0 12px 20px;padding:12px;border-left:1px solid var(--line,#25292d);background:var(--sidebar,#08090a);color:var(--ink,#d8dce0);overflow:auto;white-space:pre}.ds-tool pre:focus-visible{outline:1px solid var(--accent,#73d9ef);outline-offset:3px}"
+    },
+    {
+      "name": "Prompt dock",
+      "kind": "input",
+      "description": "A cyan heading and top rule frame the persistent prompt.",
+      "html": "<label class=\"ds-prompt\"><span>\u203a Continue session</span><textarea aria-label=\"Continue session\" placeholder=\"What should we do next?\"></textarea></label>",
+      "css": ".ds-prompt{font-family:\"Geist Mono\",ui-monospace,\"SFMono-Regular\",Menlo,monospace;font-weight:400;display:block;padding:14px 20px 12px;background:#080a0b;border-top:1px solid #3b464d;color:var(--accent,#73d9ef);font-size:11px}.ds-prompt:focus-within{border-top-color:var(--accent,#73d9ef)}.ds-prompt textarea{font-family:\"Geist Mono\",ui-monospace,\"SFMono-Regular\",Menlo,monospace;font-weight:400;display:block;margin-top:9px;width:100%;min-height:48px;border:0;outline:none;background:transparent;color:var(--ink,#d8dce0);caret-color:var(--accent,#73d9ef);font-size:13px;line-height:1.65;resize:none}.ds-prompt textarea::placeholder{color:var(--muted,#90979e);opacity:1}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Persistent terminal workspace",
+    "overview": "Homeport uses the owner's established black-and-cyan terminal direction. A continuous, left-aligned conversation is the working surface; quiet navigation and a docked prompt keep the next action close. Regular monospace type and visible, labeled state make dense work readable without decorative dashboard furniture.",
+    "keyCharacteristics": [
+      "True black scrollback with charcoal supporting surfaces.",
+      "One self-hosted monospace family, predominantly regular weight.",
+      "Cyan prompts and actions; semantic color paired with state text.",
+      "Flat, square controls and fine separators."
+    ],
+    "rules": [
+      {
+        "name": "The Labeled State Rule",
+        "body": "Pair semantic color with readable status text; color alone does not explain a session or command outcome.",
+        "section": "colors"
+      }
+    ],
+    "dos": [
+      "**Do** keep conversation and real work state visually primary.",
+      "**Do** align prose, command output, and the prompt into one continuous terminal surface.",
+      "**Do** use regular monospace session titles and labeled semantic status.",
+      "**Do** preserve exact command/output content, accessible focus, and phone-sized action targets."
+    ],
+    "donts": [
+      "**Don't** introduce decorative dashboards, marketing heroes, fake metrics, or a green garden palette.",
+      "**Don't** turn conversation entries into rounded chat bubbles or floating cards.",
+      "**Don't** present an uncertain submission or failed copy operation as successful."
+    ]
+  }
+}

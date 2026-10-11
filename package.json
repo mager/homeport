@@ -1,0 +1,6 @@
+{
+  "name": "homeport-ui-checks",
+  "private": true,
+  "scripts": { "test": "node --test tests/markdown.test.cjs" },
+  "devDependencies": { "linkedom": "0.18.13" }
+}

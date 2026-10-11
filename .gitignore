@@ -12,3 +12,6 @@ __pycache__/
 *.log
 
 .vercel/
+
+node_modules/
+.impeccable/review/

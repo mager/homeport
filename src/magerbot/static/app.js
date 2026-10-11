@@ -207,7 +207,7 @@ function renderList() {
       el(
         "span",
         "task-time",
-        age(updated) === "now" ? "now" : age(updated) + " ago",
+        age(updated),
       ),
     );
     button.append(meta);
@@ -525,41 +525,14 @@ function updateComposer() {
     $("project").title = path;
   }
 }
-function prose(text) {
-  const box = el("div");
-  // Fence handling is deliberately text-only: model HTML never becomes executable markup.
-  if (String(text || "").includes("```")) {
-    const chunks = String(text).split("```");
-    chunks.forEach((chunk, i) => {
-      if (!chunk.trim()) return;
-      if (i % 2) {
-        const n = el("pre", "", chunk.replace(/^[\w+-]*\n/, ""));
-        n.tabIndex = 0;
-        box.append(n);
-      } else appendParagraphs(box, chunk);
-    });
-  } else appendParagraphs(box, text || "");
-  return box;
-}
-function appendParagraphs(box, text) {
-  for (const block of String(text).split(/\n\s*\n/)) {
-    if (!block.trim()) continue;
-    if (/^#{1,3} /.test(block)) {
-      box.append(el("h3", "", block.replace(/^#{1,3} /, "")));
-    } else box.append(el("p", "", block));
-  }
-}
 function message(role, text) {
   const n = el("article", "message " + role);
   const label = el("div", "message-label");
-  if (role === "agent") {
-    const icon = el("img");
-    icon.src = "/static/icon.svg";
-    icon.alt = "";
-    label.append(icon);
-  }
-  label.append(document.createTextNode(role === "user" ? "You" : "Codex"));
-  n.append(label, prose(text));
+  label.append(el("span", "prompt-marker", role === "user" ? ">" : "•"));
+  label.append(document.createTextNode(role === "user" ? "you" : "codex"));
+  const body = role === "agent" ? HomeportMarkdown.render(text) : el("div", "message-body");
+  if (role === "user") body.append(el("p", "", text));
+  n.append(label, body);
   return n;
 }
 function tool(item) {
@@ -567,7 +540,18 @@ function tool(item) {
   details.dataset.item = item.id;
   const title =
     item.type === "fileChange" ? "Changed files" : item.command || "Command";
-  details.append(el("summary", "", title));
+  const summary = el("summary");
+  const command = el("span", "tool-command", title);
+  command.title = title;
+  const status = item.status === "inProgress" ? "running"
+    : item.exitCode != null ? "exit " + item.exitCode
+    : item.status === "completed" ? "done" : item.status || "";
+  summary.append(
+    el("span", "tool-symbol", item.type === "fileChange" ? "diff" : "$"),
+    command,
+    el("span", "tool-status " + (item.exitCode ? "failed" : item.status || ""), status),
+  );
+  details.append(summary);
   let text = item.aggregatedOutput || "";
   if (item.type === "fileChange")
     text = (item.changes || [])
@@ -575,7 +559,9 @@ function tool(item) {
       .join("\n\n");
   if (!text)
     text = item.status === "inProgress" ? "Running on the Mini…" : "Completed";
-  details.append(el("pre", "", text));
+  const output = el("pre", "", text);
+  output.tabIndex = 0;
+  details.append(output);
   return details;
 }
 function renderConversation(data, fallback = false) {
@@ -722,7 +708,7 @@ async function health() {
       state.status.account === "chatgpt";
     $("host-dot").className = "status-dot " + (ok ? "online" : "offline");
     $("host-status").textContent = ok
-      ? "Your Mini is ready"
+      ? "macmini · connected"
       : "Mini needs attention";
     $("host-detail").textContent = ok
       ? "Codex " + (state.status.plan || "ChatGPT") + " · private connection"
