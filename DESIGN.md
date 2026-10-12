@@ -23,7 +23,7 @@ typography:
   conversation:
     fontSize: "13px"
     fontWeight: 400
-    lineHeight: 1.8
+    lineHeight: 1.6
   label:
     fontSize: "11px"
     fontWeight: 400
@@ -41,9 +41,11 @@ typography:
     lineHeight: 1.3
     letterSpacing: "-.03em"
 spacing:
-  gutter: "clamp(20px, 3vw, 48px)"
-  mobile-gutter: "16px"
-  message-gap: "24px"
+  gutter: "20px"
+  mobile-gutter: "12px"
+  message-gap: "16px"
+  prompt-rail: "8ch"
+  mobile-prompt-rail: "7ch"
 components:
   button-primary:
     backgroundColor: "{colors.accent}"
@@ -60,9 +62,9 @@ components:
     textColor: "{colors.ink}"
   session-navigation:
     backgroundColor: "{colors.sidebar}"
-    width: "272px"
+    width: "248px"
   toolbar:
-    height: "54px"
+    height: "44px"
 ---
 
 # Design System: Homeport
@@ -110,9 +112,9 @@ Conversation paragraphs and lists stop at 74ch. Metadata is smaller than prose; 
 
 ## Layout
 
-The desktop shell fills 100dvh: a 272px session column and a flexible workspace, under a 54px toolbar. Conversation scrollback takes the available height above the persistent prompt dock. Keep user and assistant entries on the same left alignment, distinguished by prompt markers, labels, spacing, and fine rules.
+The desktop shell fills 100dvh: a 248px session column and a flexible workspace, under a 44px toolbar. Conversation scrollback takes the available height above the persistent prompt dock. Keep user and assistant entries on the same left alignment, distinguished by prompt markers, labels, spacing, and fine rules.
 
-Use the responsive gutter token for conversation, session state, and prompt alignment. Desktop message bodies inset 20px from their markers; phones remove this inset. At 700px and below, navigation becomes a full-width overlay beneath the toolbar, gutters become 16px, and primary controls, toolbar actions, overflow menus, tool disclosures, and copy buttons receive 44px minimum targets.
+Use the responsive gutter token for conversation, session state, and prompt alignment. Speaker labels and message bodies share a row, using an 8ch label rail plus 12px gap. Phones use a 7ch rail and 8px gap; tool rows use the full phone width. At 700px and below, navigation becomes a full-width overlay beneath the toolbar, gutters become 12px, and primary controls, toolbar actions, overflow menus, tool disclosures, and copy buttons receive 44px minimum targets.
 
 The file pane is 360px wide on desktop; at 1100px and below it overlays the workspace, and at phone width it fills it. Short viewports (580px high or less) compact the prompt and hide its bottom note. Keep long commands and file content contained within their scroll regions.
 
@@ -127,8 +129,8 @@ Controls and surfaces have square edges, fine rules, and compact padding. Status
 ## Components
 
 - **Buttons:** Cyan fill identifies send; quiet toolbar controls use muted text until hover. New task uses a charcoal surface and fine border. Disabled send is visibly muted. Preserve explicit text labels and focus treatment.
-- **Session navigation:** Selected rows have a cyan left rule and tinted background. Show regular-weight title, project, task count, last activity, and labeled state. Search highlights matches; active/archived filters use an underline. Keep overflow actions visible for touch alongside keyboard and context-menu access.
-- **Prompt dock:** A cyan marker and heading introduce the textarea. Draft feedback, conversation context, submit action, and shortcut hint remain close to the prompt. The dock stays visible while the conversation scrolls.
+- **Session navigation:** Selected rows have a cyan left rule and tinted background. Show a single-line, ellipsized regular-weight title (full title on hover), project, task count, last activity, and labeled state. Search highlights matches; active/archived filters use an underline. Keep overflow actions visible for touch alongside keyboard and context-menu access.
+- **Prompt dock:** A cyan `you` prompt sits beside a single-line textarea that grows with input. Draft feedback, conversation context, submit action, and shortcut hint remain close to the prompt. The dock stays visible while the conversation scrolls.
 - **Command disclosures:** Show the command and actual running/completion/exit state on one compact summary row. Expand to reveal the full command and exact output in a scrollable monospace region. Retain plus/minus disclosure marks and textual state.
 - **Markdown and code:** Render supported headings, lists, quotes, emphasis, and safe links through the existing text-based renderer. Code blocks have a language header and Copy action with `Copied` or `Select to copy` feedback; never imply success before the clipboard operation succeeds.
 - **Scrollback continuity:** Keep the current reading position stable and offer Latest output when the user has moved away from the end. Do not use decorative motion; respect reduced motion.
@@ -146,4 +148,4 @@ Controls and surfaces have square edges, fine rules, and compact padding. Status
 - **Don't** turn conversation entries into rounded chat bubbles or floating cards.
 - **Don't** present an uncertain submission or failed copy operation as successful.
 
-<!-- Captured from src/magerbot/static/style.css, index.html, app.js, and markdown.js after the October 2026 refresh. Visual references: .impeccable/review/desktop.png (1440×900), mobile.png (390×844), user-viewport.png (1280×720). DESIGN.md owns visual guidance; PRODUCT.md owns product behavior. -->
+<!-- Captured from src/magerbot/static/style.css, index.html, app.js, and markdown.js after the October 2026 refresh. Visual references: .impeccable/review/density-desktop.png (1440×900), density-mobile.png (390×844). DESIGN.md owns visual guidance; PRODUCT.md owns product behavior. -->

@@ -135,15 +135,14 @@
               <form id="composer">
                 <div class="prompt-heading">
                   <span aria-hidden="true">›</span
-                  ><span id="prompt-heading">New instruction</span
-                  ><span id="draft-status" role="status"></span>
+                  ><span id="prompt-heading">you</span>
                 </div>
                 <label class="sr-only" for="prompt"
                   >Describe a task or send a follow-up</label
                 ><textarea
                   id="prompt"
                   placeholder="What are we working on?"
-                  rows="2"
+                  rows="1"
                   required
                   maxlength="200000"
                 ></textarea>
@@ -157,8 +156,9 @@
                       spellcheck="false"
                     /><small>Codex will work in this folder.</small>
                   </details>
-                  <span id="composer-context">New conversation</span
-                  ><button id="send" class="primary" type="submit">
+                  <span id="composer-context">New conversation</span>
+                  <span id="draft-status" role="status"></span>
+                  <button id="send" class="primary" type="submit">
                     Start task <span aria-hidden="true">↑</span>
                   </button>
                 </div>

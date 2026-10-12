@@ -491,13 +491,11 @@ function updateComposer() {
     el("span", "", "↑"),
   );
   $("prompt").disabled = archived || !!state.pending;
-  $("prompt-heading").textContent = state.selected
-    ? "Continue session"
-    : "New instruction";
+  $("prompt-heading").textContent = "you";
   $("draft-status").textContent = state.pending
     ? "Awaiting confirmation"
     : $("prompt").value.trim()
-      ? "Draft saved on this device"
+      ? "Draft saved locally"
       : "";
   if (task) {
     $("session-state").replaceChildren(
@@ -665,7 +663,7 @@ $("jump-latest").onclick = () => {
 function resizePrompt() {
   const input = $("prompt");
   input.style.height = "auto";
-  input.style.height = Math.min(180, Math.max(48, input.scrollHeight)) + "px";
+  input.style.height = Math.min(180, Math.max(28, input.scrollHeight)) + "px";
 }
 async function refreshConversation() {
   if (!state.selected) return;
