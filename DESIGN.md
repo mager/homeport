@@ -10,6 +10,7 @@ colors:
   line: "#25292d"
   accent: "#73d9ef"
   accent-soft: "#101e22"
+  prompt-surface: "#0c1a1e"
   success: "#87d5a4"
   warning: "#e6bd77"
   danger: "#f09595"
@@ -43,7 +44,7 @@ typography:
 spacing:
   gutter: "20px"
   mobile-gutter: "12px"
-  message-gap: "16px"
+  message-gap: "12px"
   prompt-rail: "8ch"
   mobile-prompt-rail: "7ch"
 components:
@@ -108,11 +109,11 @@ Cyan is the primary accent against neutral black and charcoal; green, amber, red
 
 Use self-hosted Geist Mono from `src/magerbot/static/fonts/geist-mono.ttf`, with the frontmatter fallback stack throughout. This continues the owner's public-site type direction. Body, navigation, controls, and session titles remain regular; restrained medium weight is reserved for Markdown emphasis and headings.
 
-Conversation paragraphs and lists stop at 74ch. Metadata is smaller than prose; command summaries sit between them at 12px. Code keeps whitespace and horizontal scrolling. The welcome heading is the only larger type treatment. Phone search and prompt inputs use 16px text while conversation prose stays at the body size.
+Conversation paragraphs, lists, and quotes use up to 110ch at the owner’s request for more usable width; narrow viewports naturally wrap. User instructions span the available pane. Metadata is smaller than prose; command summaries sit between them at 12px. Code keeps whitespace and horizontal scrolling. The welcome heading is the only larger type treatment. Phone search and prompt inputs use 16px text while conversation prose stays at the body size.
 
 ## Layout
 
-The desktop shell fills 100dvh: a 248px session column and a flexible workspace, under a 44px toolbar. Conversation scrollback takes the available height above the persistent prompt dock. Keep user and assistant entries on the same left alignment, distinguished by prompt markers, labels, spacing, and fine rules.
+The desktop shell fills 100dvh: a 248px session column and a flexible workspace, under a 44px toolbar. Conversation scrollback takes the available height above the persistent prompt dock. Keep user and assistant entries on the same text alignment. User instructions sit on a full-width dark cyan band with a one-pixel cyan edge and explicit YOU label; CODEX replies remain on black. This distinguishes authors by surface and words, as well as color.
 
 Use the responsive gutter token for conversation, session state, and prompt alignment. Speaker labels and message bodies share a row, using an 8ch label rail plus 12px gap. Phones use a 7ch rail and 8px gap; tool rows use the full phone width. At 700px and below, navigation becomes a full-width overlay beneath the toolbar, gutters become 12px, and primary controls, toolbar actions, overflow menus, tool disclosures, and copy buttons receive 44px minimum targets.
 
@@ -130,7 +131,7 @@ Controls and surfaces have square edges, fine rules, and compact padding. Status
 
 - **Buttons:** Cyan fill identifies send; quiet toolbar controls use muted text until hover. New task uses a charcoal surface and fine border. Disabled send is visibly muted. Preserve explicit text labels and focus treatment.
 - **Session navigation:** Selected rows have a cyan left rule and tinted background. Show a single-line, ellipsized regular-weight title (full title on hover), project, task count, last activity, and labeled state. Search highlights matches; active/archived filters use an underline. Keep overflow actions visible for touch alongside keyboard and context-menu access.
-- **Prompt dock:** A cyan `you` prompt sits beside a single-line textarea that grows with input. Draft feedback, conversation context, submit action, and shortcut hint remain close to the prompt. The dock stays visible while the conversation scrolls.
+- **Prompt dock:** A cyan `YOU` prompt sits beside a single-line textarea that grows with input. Its dark cyan surface matches submitted user instructions. Draft feedback, conversation context, submit action, and shortcut hint remain close to the prompt. The dock stays visible while the conversation scrolls.
 - **Command disclosures:** Show the command and actual running/completion/exit state on one compact summary row. Expand to reveal the full command and exact output in a scrollable monospace region. Retain plus/minus disclosure marks and textual state.
 - **Markdown and code:** Render supported headings, lists, quotes, emphasis, and safe links through the existing text-based renderer. Code blocks have a language header and Copy action with `Copied` or `Select to copy` feedback; never imply success before the clipboard operation succeeds.
 - **Scrollback continuity:** Keep the current reading position stable and offer Latest output when the user has moved away from the end. Do not use decorative motion; respect reduced motion.
@@ -148,4 +149,4 @@ Controls and surfaces have square edges, fine rules, and compact padding. Status
 - **Don't** turn conversation entries into rounded chat bubbles or floating cards.
 - **Don't** present an uncertain submission or failed copy operation as successful.
 
-<!-- Captured from src/magerbot/static/style.css, index.html, app.js, and markdown.js after the October 2026 refresh. Visual references: .impeccable/review/density-desktop.png (1440×900), density-mobile.png (390×844). DESIGN.md owns visual guidance; PRODUCT.md owns product behavior. -->
+<!-- Captured from src/magerbot/static/style.css, index.html, app.js, and markdown.js after the October 2026 refresh. Visual references: .impeccable/review/roles-desktop.png (1440×900), roles-mobile.png (390×844). DESIGN.md owns visual guidance; PRODUCT.md owns product behavior. -->

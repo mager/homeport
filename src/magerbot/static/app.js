@@ -525,9 +525,10 @@ function updateComposer() {
 }
 function message(role, text) {
   const n = el("article", "message " + role);
+  n.setAttribute("aria-label", role === "user" ? "Your message" : "Codex reply");
   const label = el("div", "message-label");
   label.append(el("span", "prompt-marker", role === "user" ? ">" : "•"));
-  label.append(document.createTextNode(role === "user" ? "you" : "codex"));
+  label.append(document.createTextNode(role === "user" ? "YOU" : "CODEX"));
   const body = role === "agent" ? HomeportMarkdown.render(text) : el("div", "message-body");
   if (role === "user") body.append(el("p", "", text));
   n.append(label, body);

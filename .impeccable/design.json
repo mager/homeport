@@ -233,8 +233,8 @@
       "name": "Prompt dock",
       "kind": "input",
       "description": "An inline cyan speaker prompt anchors an expanding single-line input.",
-      "html": "<label class=\"ds-prompt\"><span>\u203a you</span><textarea rows=\"1\" aria-label=\"Continue session\" placeholder=\"What should we do next?\"></textarea></label>",
-      "css": ".ds-prompt{font-family:\"Geist Mono\",ui-monospace,\"SFMono-Regular\",Menlo,monospace;font-weight:400;display:grid;grid-template-columns:8ch minmax(0,1fr);gap:12px;padding:10px 20px 8px;background:#000;border-top:1px solid #3b464d;color:var(--accent,#73d9ef);font-size:11px}.ds-prompt:focus-within{border-top-color:var(--accent,#73d9ef)}.ds-prompt textarea{font-family:\"Geist Mono\",ui-monospace,\"SFMono-Regular\",Menlo,monospace;font-weight:400;display:block;margin-top:0;width:100%;min-height:28px;border:0;outline:none;background:transparent;color:var(--ink,#d8dce0);caret-color:var(--accent,#73d9ef);font-size:13px;line-height:1.65;resize:none}.ds-prompt textarea::placeholder{color:var(--muted,#90979e);opacity:1}"
+      "html": "<label class=\"ds-prompt\"><span>\u203a YOU</span><textarea rows=\"1\" aria-label=\"Continue session\" placeholder=\"What should we do next?\"></textarea></label>",
+      "css": ".ds-prompt{font-family:\"Geist Mono\",ui-monospace,\"SFMono-Regular\",Menlo,monospace;font-weight:400;display:grid;grid-template-columns:8ch minmax(0,1fr);gap:12px;padding:10px 20px 8px;background:var(--prompt-surface,#0c1a1e);border-top:1px solid #3b464d;color:var(--accent,#73d9ef);font-size:11px}.ds-prompt:focus-within{border-top-color:var(--accent,#73d9ef)}.ds-prompt textarea{font-family:\"Geist Mono\",ui-monospace,\"SFMono-Regular\",Menlo,monospace;font-weight:400;display:block;margin-top:0;width:100%;min-height:28px;border:0;outline:none;background:transparent;color:var(--ink,#d8dce0);caret-color:var(--accent,#73d9ef);font-size:13px;line-height:1.65;resize:none}.ds-prompt textarea::placeholder{color:var(--muted,#90979e);opacity:1}"
     }
   ],
   "narrative": {
